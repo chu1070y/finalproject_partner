@@ -85,17 +85,15 @@ $(document).ready(function () {
 	var ws; 
 	
 	$(function () {
-	     connect();
+	     
     	 console.log("connect complete.....");
-	     	 $(function() { sendName(); });
 	});	 
 
 
 	function setConnected(connected) { 
 		 $("#Disconnected").prop("disabled", !connected);
 		 
-		if (connected){
-			
+		if (connected){			
 			$("#conversation").show();
 			$("#greetings").html("");
 		}
@@ -115,6 +113,8 @@ $(document).ready(function () {
 		 setConnected(true);
 	}
 	
+	
+	
  	function disconnect() {
 	    if (ws != null) {
 	        ws.close();
@@ -124,7 +124,17 @@ $(document).ready(function () {
 
  	function sendName() {
 		var data = JSON.stringify({'myDevice': '00000000089c4f68'})
-	    ws.send(data);
+		
+		console.log(ws);
+		
+		ws.onopen = function() {
+		
+			console.log("websocket opened....");
+			ws.send(data);
+			
+		}
+		
+	    
 	} 
 
 
@@ -199,6 +209,13 @@ $(document).ready(function () {
 	$(function () {
 		 $( "#Disconnected" ).click(function() { disconnect(); });	
 	});	
+	
+	 window.onload = function(){
+		 console.log("보내주세요;;;;");
+		 connect();
+		 sendName(); 
+	 };
+
 });
 </script>
 </th:block>
