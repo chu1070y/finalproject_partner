@@ -104,11 +104,6 @@
 	
 	$(document).ready(function () {
 		
-		
-		$('#myModal').on('shown.bs.modal', function () {
-			  $('#myInput').trigger('focus')
-			});
-		
 		$('#myModal').modal('show');
 		var tempMsg = "";
 		
@@ -150,8 +145,10 @@
 			        console.log(tempMsg);
 			        
 			        //음성 메세지 DB에 저장할 경우
-			        //sendVoice(tempMsg);
-			        pushMessage(tempMsg);
+			        sendVoice(tempMsg);
+			        
+			        //푸시 메세지 보낼 경우
+			        //pushMessage(tempMsg);
 			    	 
 			      $('.modal-body').removeClass('on');
 			    },5000);
@@ -196,11 +193,13 @@
 			 $.ajax({
 				 type:'post',
 					url:'https://fcm.googleapis.com/fcm/send',
-					contentType: "application/json; charset=utf-8",
 					headers:{
+						"Content-Type" : "application/json",
 						"Authorization" : "key=AAAAgHRKKlg:APA91bHCHmYkU1PANUYZgctP5dBZ1EuZZ5VfS4_fXUicesDas88tm6Rs1y35YMmLuOzAu3xmQqfI0KtR17UcdGR2ZuYrxhLJ2QasccO4xsO3kEBC98lO-Np1nIrxCa_mgE_DnnPCaxCe"
 					},
-					data:{
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					data:JSON.stringify({
 					    "notification" : {
 					        "body" : data,
 					        "title" : "FCM Message", 
@@ -208,7 +207,7 @@
 					        "icon": "http://url-to-an-icon/icon.png"
 					        },
 					      "to": "doRjrnXesUI:APA91bEnzM20a-IsRm1f8AotE9pSVlJxF7Qz7vdBpCw2sK8WDppFY8g3JHeYwqOAjjZYd1GQWsMyhw5lDwfYDIL5443vuI1PAjgzIa2GCpvxltKwuLYkC1Bk6HeaantSgJmZhPmswzXi"
-					  },
+					  }),
 					success: function(result,status,xhr){
 						if(callback){
 							callback(result);
