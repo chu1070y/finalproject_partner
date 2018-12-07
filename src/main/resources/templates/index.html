@@ -8,7 +8,7 @@
 	border-radius: 1em;
 	padding: 1em;
 	padding-right: 4em;
-	border: 1px solid #e0e0e0;
+	border: 1px solid #e0e0e0; 
 	font-size: 14px;
 	font-family: '돋움', Dotum, AppleGothic, sans-serif;
 	position: relative;
@@ -145,10 +145,10 @@
 			        console.log(tempMsg);
 			        
 			        //음성 메세지 DB에 저장할 경우
-			        sendVoice(tempMsg);
+			        //sendVoice(tempMsg);
 			        
 			        //푸시 메세지 보낼 경우
-			        //pushMessage(tempMsg);
+			        pushMessage(tempMsg);
 			    	 
 			      $('.modal-body').removeClass('on');
 			    },5000);
@@ -161,6 +161,9 @@
 		      
 		  <!-- close else -->
 		  }
+		 
+		 
+		 //음성 인식
 		 
 		 
 		 //음성 메세지 DB에 저장할 경우
@@ -206,7 +209,7 @@
 					        "click_action": "https://gorany-df5bd.firebaseapp.com",
 					        "icon": "http://url-to-an-icon/icon.png"
 					        },
-					      "to": "doRjrnXesUI:APA91bEnzM20a-IsRm1f8AotE9pSVlJxF7Qz7vdBpCw2sK8WDppFY8g3JHeYwqOAjjZYd1GQWsMyhw5lDwfYDIL5443vuI1PAjgzIa2GCpvxltKwuLYkC1Bk6HeaantSgJmZhPmswzXi"
+					      "to": "fc2WjPxMaeY:APA91bEbSuM1iOi8mRNZn76w0F-Z5oMyVwIsk0dr6QLhWqk4Cga2ZxFT14ubJf1LQeehqY97Dx5o27UgOKaSswU6-o9i3rTqYwGtP4cJVOKg22BLefnNdfAzMvCE7iAsMHeQAxcafI0x"
 					  }),
 					success: function(result,status,xhr){
 						if(callback){
