@@ -9,10 +9,6 @@ spring:
     cache: false
     
 
-  security:
-    user:
-      name: gorany
-      password: 12345678
 
 
 server:
