@@ -1,6 +1,10 @@
 
 var ws;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640004ec20beb6361ff54c41395f9291c708981d
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
@@ -30,6 +34,7 @@ function disconnect() {
 }
 
 function sendName() {
+<<<<<<< HEAD
 	var data = JSON.stringify({'myDevice': $("#myDevice").val()})
     ws.send(data);
 }
@@ -117,6 +122,15 @@ function showModal() {
 		}
 		 
 };
+=======
+	var data = JSON.stringify({'name': $("#name").val()})
+    ws.send(data);
+}
+
+function showGreeting(message) {
+    $("#greetings").append("<tr><td> " + message + "</td></tr>");
+}
+>>>>>>> 640004ec20beb6361ff54c41395f9291c708981d
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -125,4 +139,9 @@ $(function () {
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendName(); });
+<<<<<<< HEAD
 });
+=======
+});
+
+>>>>>>> 640004ec20beb6361ff54c41395f9291c708981d
