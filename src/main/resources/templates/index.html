@@ -151,6 +151,7 @@
 			        
 			        //음성 메세지 DB에 저장할 경우
 			        //sendVoice(tempMsg);
+			        pushMessage(tempMsg);
 			    	 
 			      $('.modal-body').removeClass('on');
 			    },5000);
@@ -189,14 +190,25 @@
 		 
 		 
 		 //음성 메세지 푸시 알람
-		 function pushMessage(){
+		 function pushMessage(data){
 			 console.log("push message.........");
 			 
 			 $.ajax({
 				 type:'post',
-					url:'/sendVoice',
-					data:JSON.stringify(data),
+					url:'https://fcm.googleapis.com/fcm/send',
 					contentType: "application/json; charset=utf-8",
+					headers:{
+						"Authorization" : "key=AAAAgHRKKlg:APA91bHCHmYkU1PANUYZgctP5dBZ1EuZZ5VfS4_fXUicesDas88tm6Rs1y35YMmLuOzAu3xmQqfI0KtR17UcdGR2ZuYrxhLJ2QasccO4xsO3kEBC98lO-Np1nIrxCa_mgE_DnnPCaxCe"
+					},
+					data:{
+					    "notification" : {
+					        "body" : data,
+					        "title" : "FCM Message", 
+					        "click_action": "https://gorany-df5bd.firebaseapp.com",
+					        "icon": "http://url-to-an-icon/icon.png"
+					        },
+					      "to": "doRjrnXesUI:APA91bEnzM20a-IsRm1f8AotE9pSVlJxF7Qz7vdBpCw2sK8WDppFY8g3JHeYwqOAjjZYd1GQWsMyhw5lDwfYDIL5443vuI1PAjgzIa2GCpvxltKwuLYkC1Bk6HeaantSgJmZhPmswzXi"
+					  },
 					success: function(result,status,xhr){
 						if(callback){
 							callback(result);
