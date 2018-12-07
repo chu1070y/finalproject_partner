@@ -4,7 +4,7 @@
 
 <div layout:fragment="content">
 
-<style scoped>
+	<style scoped>
 #speech_box {
 	border-radius: 1em;
 	padding: 1em;
@@ -45,16 +45,12 @@
 	color: #bbb
 }
 </style>
-		
-		<div id="conversation">
-			<div id="greetings">
-			</div>
-			<button id="Disconnected">연결종료</button>
-		</div>
-	
-	
-	<!-- 지우면 안되는 /div 태그 -->
+
+	<div id="conversation">
+		<div id="greetings"></div>
+		<button id="Disconnected">연결종료</button>
 	</div>
+
 
 
 	<!-- Modal -->
@@ -63,7 +59,8 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<h5>5초간 음성 인식이 시작됩니다. 수행명령을 말하세요.</h5>
@@ -79,7 +76,7 @@
 </div>
 
 <th:block layout:fragment="script">
-<script th:inline="javascript">
+	<script th:inline="javascript">
 $(document).ready(function () {
 	
 	var ws; 
@@ -133,13 +130,12 @@ $(document).ready(function () {
 			ws.send(data);
 			
 		}
-		
 	    
 	} 
 
 
 	function showGreeting(message) {
-	    	
+	    console.log("showGreeting..............");
 	    $("#greetings").append("<tr><td> " + message + "</td></tr>");
 	    $("#myModal").modal("show");
 			
@@ -175,8 +171,7 @@ $(document).ready(function () {
 	  
 	    	  	mic.stop();
 	    	    $('.modal-body').removeClass('on');
-
-
+	    	    	$("#speech_box").text("");
 	    	      
 	    	    };
 	    	    
@@ -211,7 +206,6 @@ $(document).ready(function () {
 	});	
 	
 	 window.onload = function(){
-		 console.log("보내주세요;;;;");
 		 connect();
 		 sendName(); 
 	 };
@@ -219,4 +213,3 @@ $(document).ready(function () {
 });
 </script>
 </th:block>
-
