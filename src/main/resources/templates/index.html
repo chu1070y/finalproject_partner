@@ -79,6 +79,84 @@
 	<script th:inline="javascript">
 $(document).ready(function () {
 	
+	/* 		 //음성인식에서 키워드 추출
+	 function keyword(data){
+		 var check = {
+				 "1" : {"1","일"},
+				 "2" : {"2"."이"},
+				 "3" : {"3","삼"},
+				 "4" : {"4","사"},
+				 "5" : {"5","오"},
+				 "6" : {"6","육"},
+				 "7" : {"7","칠"},
+				 "8" : {"8","팔"},
+				 "9" : {"9","구"},
+				 "0" : {"0","영","공"}
+		 }
+		 
+		 
+	 } */
+	 
+	 //음성 메세지 DB에 저장할 경우
+	 function sendVoice(data,callback,error){
+		 console.log("send voice.........");
+		 
+		 $.ajax({
+			 type:'post',
+				url:'/sendVoice',
+				data:JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				success: function(result,status,xhr){
+					if(callback){
+						callback(result);
+					}
+				},
+				error: function(xhr,status,er){
+					if(error){
+						error(er);
+					}
+				}
+		 });
+	 }//end sendVoice
+	 
+	 
+	 //음성 메세지 푸시 알람
+	 function pushMessage(data){
+		 console.log("push message.........");
+		 
+		 $.ajax({
+			 type:'post',
+				url:'https://fcm.googleapis.com/fcm/send',
+				headers:{
+					"Content-Type" : "application/json",
+					"Authorization" : "key=AAAAgHRKKlg:APA91bHCHmYkU1PANUYZgctP5dBZ1EuZZ5VfS4_fXUicesDas88tm6Rs1y35YMmLuOzAu3xmQqfI0KtR17UcdGR2ZuYrxhLJ2QasccO4xsO3kEBC98lO-Np1nIrxCa_mgE_DnnPCaxCe"
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				data:JSON.stringify({
+				    "notification" : {
+				        "body" : data,
+				        "title" : "FCM Message", 
+				        "click_action": "https://gorany-df5bd.firebaseapp.com",
+				        "icon": "http://url-to-an-icon/icon.png"
+				        },
+				      "to": "cHFUupbfKDs:APA91bHGYhS1DRdmTJfYcDesPJHKAgsaOF330GGNFtufAD28hhsJMkjAlIPBmkD1DB7dz3oXCGGzLFmeC1xz_cXogDwfwAIuS3XuFbpvOY-bO4Uftn6pkygtf0qMCs0aLuSYMVJcGfGd"
+				  }),
+				success: function(result,status,xhr){
+					if(callback){
+						callback(result);
+					}
+				},
+				error: function(xhr,status,er){
+					if(error){
+						error(er);
+					}
+				}
+		 });
+		 
+	 }
+	 
+	
 	var ws; 
 	
 	$(function () {
@@ -170,6 +248,8 @@ $(document).ready(function () {
 	    	    console.log(tempMsg);
 	  
 	    	  	mic.stop();
+	    	  	pushMessage(tempMsg);
+	    	  	
 	    	    $('.modal-body').removeClass('on');
 	    	    	$("#speech_box").text("");
 	    	      
@@ -181,7 +261,7 @@ $(document).ready(function () {
 			      if($('.modal-body').hasClass('on')) mic.stop();
 			      else {
 			        mic.start();
-			        console.log("mic start.............")
+			        console.log("mic start.............");
 			        
 			      $('.modal-body').toggleClass('on');
 			      window.setTimeout(function () {
