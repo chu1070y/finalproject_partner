@@ -72,6 +72,10 @@ public class GreetingController extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// sessions.add(session.getId());
 		sessions.put(session.getId(), session);
+		System.out.println("session: " + session);
+		System.out.println("id: " + session.getId());
+		System.out.println("handshakeHeaders: " + session.getHandshakeHeaders());
+		System.out.println("extensions: " + session.getExtensions());
 		System.out.println("지금은 SIZE: " + sessions.size());
 
 	}
