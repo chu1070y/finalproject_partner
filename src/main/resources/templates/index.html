@@ -43,6 +43,26 @@
 #speech_box .text {
 	color: #bbb
 }
+
+/* .square{
+width:100px;
+height:100px;
+background-color:red;
+} */
+
+.block { 
+position: relative; 
+/* margin-right:10000px; */
+background-color: #abc; 
+width: 100px; 
+height: 100px;
+/* left:200px; */
+float: right;
+margin: 5px; }
+
+
+
+
 </style>
 	<h1>index.html</h1>
 	
@@ -110,9 +130,39 @@
 
 
 
+<!-- <div class="block"></div> 
+<div class="block"></div> 
+<div class="block"></div> 
+<div class="block"></div> 
+<div class="block"></div> 
+<div class="block"></div> -->
 
 
 
+
+
+<tr th:each="num: ${#numbers.sequence(1,12)}">
+
+<td><div class="block"></div></td>
+
+</tr>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><button id="go">go</button>
+
+
+<ul>
+<tr th:each="item: ${result}">
+<td>${item}</td>
+</tr>
+</ul>
 
 
 
@@ -136,12 +186,37 @@
 
 
 </div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+
 
 <th:block layout:fragment="script">
 
 	<script th:inline="javascript">
 	
+	 
+	
 	$(document).ready(function () {
+		
+		
+		
+	//네모네모
+	 $("#go").click(function(){
+		 $( ".block:last" ).animate({ 
+			 bottom: 400 }, 
+			 
+			 { duration: 1000, 
+				 //step: function( now, fx ){ $( ".block:gt(0)" ).css( "right", now ); 
+				 step: function( now, fx ){ $( ".block" ).css( "right", now ); 
+				 } });
+		
+
+		
+	 });
+	
+	
+	
+	
 		 
 /* 		 //음성인식에서 키워드 추출
 		 function keyword(data){
@@ -219,7 +294,6 @@
 			 });
 			 
 		 }
-		 
 		 
 		 
 		 

@@ -1,6 +1,9 @@
 package org.gorany.controller;
 
+import org.gorany.mapper.OrderMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.java.Log;
@@ -9,9 +12,17 @@ import lombok.extern.java.Log;
 @Controller
 public class GeneralController {
 
+	@Autowired
+	private OrderMapper ordermapper;
+	
 	@GetMapping("/index")
-	public void index() {
+	public void index(Model model) {
 		log.info("index......................page");
+		
+		//ordermapper
+		model.addAttribute("result", ordermapper.getOrder());
+		
+		
 	}
 	
 	@GetMapping("/sales")
