@@ -1,29 +1,32 @@
 package org.gorany.controller;
 
+import java.util.List;
+
+import org.gorany.domain.mapper.OrderVO;
 import org.gorany.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.java.Log;
 
 @Log
 @Controller
 public class GeneralController {
 
-	
+	@Setter(onMethod_= @Autowired)
 	private OrderMapper ordermapper;
 	
 	@GetMapping("/index")
-	public void index(Model model) {
-		log.info("index......................page");
-		
+	public void index(Model model) throws Exception {
+		log.info("index......................page");	
+	
 		//ordermapper
+		//List<OrderVO> resultList = ordermapper.getOrder();
 		model.addAttribute("result", ordermapper.getOrder());
-		
+		System.out.println("-=------------------------------>"+model);
 		
 	}
 	

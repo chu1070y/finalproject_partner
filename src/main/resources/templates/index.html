@@ -10,6 +10,11 @@
 		<button id="Disconnected">연결종료</button>
 	</div>
 	
+	<tr th:each="result : ${result}">
+	<td th:text="${result.tid}"></td>
+	</tr>
+	
+	
 	
 	<style>
 	
