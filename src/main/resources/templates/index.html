@@ -3,432 +3,395 @@
 	layout:decorate="~{/layout/layout1}">
 
 <div layout:fragment="content">
-	<style scoped>
-#speech_box {
-	border-radius: 1em;
-	padding: 1em;
-	padding-right: 4em;
-	border: 1px solid #e0e0e0;
-	font-size: 14px;
-	font-family: '돋움', Dotum, AppleGothic, sans-serif;
+
+
+	<div id="conversation">
+		<div id="greetings"></div>
+		<button id="Disconnected">연결종료</button>
+	</div>
+	
+	
+	<style>
+	
+	.modal-open {
+	overflow: hidden
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1040;
+	display: none;
+	overflow: auto;
+	overflow-y: scroll
+}
+
+.modal.fade .modal-dialog {
+	-webkit-transform: translate(0, -25%);
+	-ms-transform: translate(0, -25%);
+	transform: translate(0, -25%);
+	-webkit-transition: -webkit-transform .3s ease-out;
+	-moz-transition: -moz-transform .3s ease-out;
+	-o-transition: -o-transform .3s ease-out;
+	transition: transform .3s ease-out
+}
+
+.modal.in .modal-dialog {
+	-webkit-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	transform: translate(0, 0)
+}
+
+.modal-dialog {
 	position: relative;
-	background: #f9f9f9;
-	min-height: 4em
+	z-index: 1050;
+	width: auto;
+	margin: 10px
 }
 
-#speech_box button {
-	position: absolute;
-	top: .4em;
-	right: .4em;
-	border-radius: .4em;
-	border: 1px solid #e9e9e9;
-	background: #f0f0f0;
-	padding: .5em;
-	cursor: pointer
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	outline: 0;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	background-clip: padding-box
 }
 
-#speech_box button:hover, #speech_box.on button {
-	background: #f5f5f5;
-	font-weight: bold
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1030;
+	background-color: #000
 }
 
-#speech_box {
-	color: #333
+.modal-backdrop.fade {
+	opacity: 0;
+	filter: alpha(opacity = 0)
 }
 
-#speech_box span {
-	display: block
+.modal-backdrop.in {
+	opacity: .5;
+	filter: alpha(opacity = 50)
 }
 
-#speech_box .text {
-	color: #bbb
+.modal-header {
+	min-height: 16.428571429px;
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5
 }
 
-/* .square{
-width:100px;
-height:100px;
-background-color:red;
-} */
+.modal-header .close {
+	margin-top: -2px
+}
 
-.block { 
-position: relative; 
-/* margin-right:10000px; */
-background-color: #abc; 
-width: 100px; 
-height: 100px;
-/* left:200px; */
-float: right;
-margin: 5px; }
+.modal-title {
+	margin: 0;
+	line-height: 1.428571429
+}
 
+.modal-body {
+	position: relative;
+	padding: 20px
+}
 
+.modal-footer {
+	padding: 19px 20px 20px;
+	margin-top: 15px;
+	text-align: right;
+	border-top: 1px solid #e5e5e5
+}
 
+.modal-footer:before, .modal-footer:after {
+	display: table;
+	content: " "
+}
 
-</style>
-	<h1>index.html</h1>
+.modal-footer:after {
+	clear: both
+}
+
+.modal-footer:before, .modal-footer:after {
+	display: table;
+	content: " "
+}
+
+.modal-footer:after {
+	clear: both
+}
+
+.modal-footer .btn+.btn {
+	margin-bottom: 0;
+	margin-left: 5px
+}
+
+.modal-footer .btn-group .btn+.btn {
+	margin-left: -1px
+}
+
+.modal-footer .btn-block+.btn-block {
+	margin-left: 0
+}
+
+@media screen and (min-width:768px) {
+	.modal-dialog {
+		width: 600px;
+		margin: 30px auto
+	}
+	.modal-content {
+		-webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)
+	}
+}
 	
+	</style>
 	
-		<div id="main-content" class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<form class="form-inline">
-					<div class="form-group">
-						<label for="connect">WebSocket connection:</label>
-						<button id="connect" class="btn btn-default" type="submit">Connect</button>
-						<button id="disconnect" class="btn btn-default" type="submit"
-							disabled="disabled">Disconnect</button>
-					</div>
-				</form>
-			</div>
-			<div class="col-md-6">
-				<form class="form-inline">
-					<div class="form-group">
-						<label for="myDevice">What is your device?</label> <input
-							type="text" id="myDevice" class="form-control"
-							placeholder="Your name here...">
-					</div>
-					<button id="send" class="btn btn-default" type="submit">Send</button>
-				</form>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<table id="conversation" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Greetings</th>
-						</tr>
-					</thead>
-					<tbody id="greetings">
-					</tbody>
-				</table>
-			</div>
-		</div>
 
-	</div>
-
-
-
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="my_modalLabel">
-		<div class="modal-dialog" role="dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h5>5초간 음성 인식이 시작됩니다. 수행명령을 말하세요.</h5>
-				</div>
-				<div class="modal-body">
-					<div id="speech_box"></div>
-				</div>
-				<div class="modal-footer"></div>
-			</div>
-		</div>
-	</div>
-
-
-
-<!-- <div class="block"></div> 
-<div class="block"></div> 
-<div class="block"></div> 
-<div class="block"></div> 
-<div class="block"></div> 
-<div class="block"></div> -->
-
-
-
-
-
-<tr th:each="num: ${#numbers.sequence(1,12)}">
-
-<td><div class="block"></div></td>
-
-</tr>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br><button id="go">go</button>
-
-
-<ul>
-<tr th:each="item: ${result}">
-<td>${item}</td>
-</tr>
-</ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" id="exampleModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Speak Up!!!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <h5>5초간 음성 인식이 시작됩니다. 수행명령을 말하세요.</h5>
+		<div id="speech_box"></div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
 </div>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
-
+	
+	
+	
+</div>
 
 <th:block layout:fragment="script">
-
 	<script th:inline="javascript">
+$(document).ready(function () {
 	
+	/* 		 //음성인식에서 키워드 추출
+	 function keyword(data){
+		 var check = {
+				 "1" : {"1","일"},
+				 "2" : {"2"."이"},
+				 "3" : {"3","삼"},
+				 "4" : {"4","사"},
+				 "5" : {"5","오"},
+				 "6" : {"6","육"},
+				 "7" : {"7","칠"},
+				 "8" : {"8","팔"},
+				 "9" : {"9","구"},
+				 "0" : {"0","영","공"}
+		 }
+		 
+		 
+	 } */
+	 
+	 //음성 메세지 DB에 저장할 경우
+	 function sendVoice(data,callback,error){
+		 console.log("send voice.........");
+		 
+		 $.ajax({
+			 type:'post',
+				url:'/sendVoice',
+				data:JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				success: function(result,status,xhr){
+					if(callback){
+						callback(result);
+					}
+				},
+				error: function(xhr,status,er){
+					if(error){
+						error(er);
+					}
+				}
+		 });
+	 }//end sendVoice
+	 
+	 
+	 //음성 메세지 푸시 알람
+	 function pushMessage(data){
+		 console.log("push message.........");
+		 
+		 $.ajax({
+			 type:'post',
+				url:'https://fcm.googleapis.com/fcm/send',
+				headers:{
+					"Content-Type" : "application/json",
+					"Authorization" : "key=AAAAgHRKKlg:APA91bHCHmYkU1PANUYZgctP5dBZ1EuZZ5VfS4_fXUicesDas88tm6Rs1y35YMmLuOzAu3xmQqfI0KtR17UcdGR2ZuYrxhLJ2QasccO4xsO3kEBC98lO-Np1nIrxCa_mgE_DnnPCaxCe"
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				data:JSON.stringify({
+				    "notification" : {
+				        "body" : data,
+				        "title" : "FCM Message", 
+				        "click_action": "https://gorany-df5bd.firebaseapp.com",
+				        "icon": "http://url-to-an-icon/icon.png"
+				        },
+				      "to": "cHFUupbfKDs:APA91bHGYhS1DRdmTJfYcDesPJHKAgsaOF330GGNFtufAD28hhsJMkjAlIPBmkD1DB7dz3oXCGGzLFmeC1xz_cXogDwfwAIuS3XuFbpvOY-bO4Uftn6pkygtf0qMCs0aLuSYMVJcGfGd"
+				  }),
+				success: function(result,status,xhr){
+					if(callback){
+						callback(result);
+					}
+				},
+				error: function(xhr,status,er){
+					if(error){
+						error(er);
+					}
+				}
+		 });
+	 }
 	 
 	
-	$(document).ready(function () {
+	var ws;
+	
+	$(function () {
+	     
+    	 console.log("connect complete.....");
+	});	 
+
+
+	function setConnected(connected) { 
+		 $("#Disconnected").prop("disabled", !connected);
+		 
+		if (connected){			
+			$("#conversation").show();
+			$("#greetings").html("");
+		}
+		else{
+			ws.close();
+			console.log("Disconnected");
+			
+		}
+
+	}
+
+	function connect() {
+		ws = new WebSocket('ws://localhost:8080/name');
+		ws.onmessage = function(data){
+			showGreeting(data.data);
+		}
+		 setConnected(true);
+	}
+	
+	
+	
+ 	function disconnect() {
+	    if (ws != null) {
+	        ws.close();
+	    }
+	    setConnected(false);
+	} 
+
+ 	function sendName() {
+		var data = JSON.stringify({'myDevice': '00000000089c4f68'})
 		
+		console.log(ws);
 		
+		ws.onopen = function() {
 		
-	//네모네모
-	 $("#go").click(function(){
-		 $( ".block:last" ).animate({ 
-			 bottom: 400 }, 
+			console.log("websocket opened....");
+			ws.send(data);
+			
+		}
+	    
+	} 
+
+
+	function showGreeting(message) {
+	    console.log("showGreeting..............");
+	    $("#greetings").append("<tr><td> " + message + "</td></tr>");
+	    $("#myModal").modal("show");
+			
+			var tempMsg = "";
+			
+			 if(!('webkitSpeechRecognition' in window)) $('#myModal').html('<strong>지원하지 않는 브라우저입니다.</strong>');
 			 
-			 { duration: 1000, 
-				 //step: function( now, fx ){ $( ".block:gt(0)" ).css( "right", now ); 
-				 step: function( now, fx ){ $( ".block" ).css( "right", now ); 
-				 } });
-		
-
-		
-	 });
-	
-	
-	
-	
-		 
-/* 		 //음성인식에서 키워드 추출
-		 function keyword(data){
-			 var check = {
-					 "1" : {"1","일"},
-					 "2" : {"2"."이"},
-					 "3" : {"3","삼"},
-					 "4" : {"4","사"},
-					 "5" : {"5","오"},
-					 "6" : {"6","육"},
-					 "7" : {"7","칠"},
-					 "8" : {"8","팔"},
-					 "9" : {"9","구"},
-					 "0" : {"0","영","공"}
-			 }
+			  else{
+			    var mic = new webkitSpeechRecognition();
+			    mic.continuous = true;
+			    mic.interimResults = true;
+			    mic.lang = 'ko-KR';
+			    
+			    mic.onresult = function(e) {
+			      var b = '', c = false;
+			      for(var i = e.resultIndex; i < e.results.length; ++i) {
+			        b += e.results[i][0].transcript;
+			        c = e.results[i].isFinal;
+			      }
+			      if($('#speech_box .text').length < 1) $('#speech_box').append('<span class="text"></span>');
+			      $('#speech_box .text').text(b);
+			      if(c) $('#speech_box .text').removeClass('text');
+			      
+			      tempMsg = b;
+			    };
+					 
+	    	    <!--마이크 end 일 때-->
+	    	    mic.onend = function() {
+	    	    	
+	    	    console.log(tempMsg);
+	  
+	    	  	mic.stop();
+	    	  	pushMessage(tempMsg);
+	    	  	
+	    	    $('.modal-body').removeClass('on');
+	    	    	$("#speech_box").text("");
+	    	      
+	    	    };
+	    	    
+			    
+			    <!--마이크 on 일 때-->
+			    $(".modal-body").show(function () {
+			      if($('.modal-body').hasClass('on')) mic.stop();
+			      else {
+			        mic.start();
+			        console.log("mic start.............");
+			        
+			      $('.modal-body').toggleClass('on');
+			      window.setTimeout(function () {
+			    	  	mic.stop();
+				        $("#myModal").modal("hide");
+				      $('.modal-body').removeClass('on');
+				    },5000);
+			      <!-- close else -->
+			      }
+			     
+			    <!-- close function -->
+			    });
+			      
+			      
+			  <!-- close else -->
+			  }
 			 
-			 
-		 } */
-		 
-		 //음성 메세지 DB에 저장할 경우
-		 function sendVoice(data,callback,error){
-			 console.log("send voice.........");
-			 
-			 $.ajax({
-				 type:'post',
-					url:'/sendVoice',
-					data:JSON.stringify(data),
-					contentType: "application/json; charset=utf-8",
-					success: function(result,status,xhr){
-						if(callback){
-							callback(result);
-						}
-					},
-					error: function(xhr,status,er){
-						if(error){
-							error(er);
-						}
-					}
-			 });
-		 }//end sendVoice
-		 
-		 
-		 //음성 메세지 푸시 알람
-		 function pushMessage(data){
-			 console.log("push message.........");
-			 
-			 $.ajax({
-				 type:'post',
-					url:'https://fcm.googleapis.com/fcm/send',
-					headers:{
-						"Content-Type" : "application/json",
-						"Authorization" : "key=AAAAgHRKKlg:APA91bHCHmYkU1PANUYZgctP5dBZ1EuZZ5VfS4_fXUicesDas88tm6Rs1y35YMmLuOzAu3xmQqfI0KtR17UcdGR2ZuYrxhLJ2QasccO4xsO3kEBC98lO-Np1nIrxCa_mgE_DnnPCaxCe"
-					},
-					contentType: "application/json; charset=utf-8",
-					dataType: "json",
-					data:JSON.stringify({
-					    "notification" : {
-					        "body" : data,
-					        "title" : "FCM Message", 
-					        "click_action": "https://gorany-df5bd.firebaseapp.com",
-					        "icon": "http://url-to-an-icon/icon.png"
-					        },
-					      "to": "fc2WjPxMaeY:APA91bEbSuM1iOi8mRNZn76w0F-Z5oMyVwIsk0dr6QLhWqk4Cga2ZxFT14ubJf1LQeehqY97Dx5o27UgOKaSswU6-o9i3rTqYwGtP4cJVOKg22BLefnNdfAzMvCE7iAsMHeQAxcafI0x"
-					  }),
-					success: function(result,status,xhr){
-						if(callback){
-							callback(result);
-						}
-					},
-					error: function(xhr,status,er){
-						if(error){
-							error(er);
-						}
-					}
-			 });
-			 
-		 }
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	//app.js코드................................................
+	};
+	
+	$(function () {
+		 $( "#Disconnected" ).click(function() { disconnect(); });	
+	});	
+	
+	 window.onload = function(){
+		 connect();
+		 sendName(); 
+	 };
 
-		 var ws;
-
-
-
-		 function setConnected(connected) {
-		     $("#connect").prop("disabled", connected);
-		     $("#disconnect").prop("disabled", !connected);
-		     if (connected) {
-		         $("#conversation").show();
-		     }
-		     else {
-		         $("#conversation").hide();
-		     }
-		     $("#greetings").html("");
-		 }
-
-		 function connect() {
-			console.log("connect함수 들어옴....");
-		 	ws = new WebSocket('ws://localhost:8080/name');
-		 	ws.onmessage = function(data){
-		 		showGreeting(data.data);
-		 	}
-		 	 setConnected(true);
-		 }
-
-		 function disconnect() {
-		     if (ws != null) {
-		         ws.close();
-		     }
-		     setConnected(false);
-		     console.log("Disconnected");
-		 }
-
-		 function sendName() {
-		 	var data = JSON.stringify({'myDevice': '00000000089c4f68'})
-		     ws.send(data);
-		 }
-
-		 function showGreeting(message) {
-			 $('#myModal').modal('show');
-				var tempMsg = "";
-				
-				 if(!('webkitSpeechRecognition' in window)) $('#myModal').html('<strong>지원하지 않는 브라우저입니다.</strong>');
-				 
-				  else{
-				    var mic = new webkitSpeechRecognition();
-				    mic.continuous = true;
-				    mic.interimResults = true;
-				    mic.lang = 'ko-KR';
-				    
-				    mic.onresult = function(e) {
-				      var b = '', c = false;
-				      for(var i = e.resultIndex; i < e.results.length; ++i) {
-				        b += e.results[i][0].transcript;
-				        c = e.results[i].isFinal;
-				      }
-				      if($('#speech_box .text').length < 1) $('#speech_box').append('<span class="text"></span>');
-				      $('#speech_box .text').text(b);
-				      if(c) $('#speech_box .text').removeClass('text');
-				      
-				      tempMsg = b;
-				       
-				    };
-						    
-				    
-				    <!--마이크 on 일 때-->
-				    $(".modal-body").show(function () {
-				      if($('.modal-body').hasClass('on')) mic.stop();
-				      else {
-				        mic.start();
-				        console.log("mic start.............")
-				        
-				      $('.modal-body').toggleClass('on');
-				      window.setTimeout(function () {
-				    	  	mic.stop();
-					        $("#myModal").modal("hide");
-					        
-					        console.log(tempMsg);
-					        
-					        //음성 메세지 DB에 저장할 경우
-					        //sendVoice(tempMsg);
-					        
-					        //푸시 메세지 보낼 경우
-					        //pushMessage(tempMsg);
-					    	 
-					      $('.modal-body').removeClass('on');
-					    },5000);
-				      <!-- close else -->
-				      }
-				     
-				    <!-- close function -->
-				    });
-				      
-				      
-				  <!-- close else -->
-				  }
-		 }
-
-		 $(function () {
-		     $("form").on('submit', function (e) {
-		         e.preventDefault();
-		     });
-		     $( "#connect" ).click(function() { connect(); });
-		     $( "#disconnect" ).click(function() { disconnect(); });
-		     $( "#send" ).click(function() { sendName(); });
-		 });
-
-		 console.log("app.js....");
-
-		 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	});
-	</script>
+});
+</script>
 </th:block>
