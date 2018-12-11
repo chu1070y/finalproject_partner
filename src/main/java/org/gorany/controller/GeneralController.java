@@ -30,11 +30,6 @@ public class GeneralController {
 		
 	}
 	
-	@GetMapping("/sales")
-	public void sales() {
-		log.info("sales......................page");
-	}
-	
 	@GetMapping("/menu")
 	public void menu() {
 		log.info("menu......................page");
