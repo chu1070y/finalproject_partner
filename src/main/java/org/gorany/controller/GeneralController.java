@@ -14,18 +14,18 @@ import lombok.extern.java.Log;
 @Controller
 public class GeneralController {
 
-//	
-//	private OrderMapper ordermapper;
-//	
-//	@GetMapping("/index")
-//	public void index(Model model) throws Exception {
-//		log.info("index......................page");
-//		
-//		//ordermapper
-//		model.addAttribute("result", ordermapper.getOrder());
-//		
-//		
-//	}
+	
+	private OrderMapper ordermapper;
+	
+	@GetMapping("/index")
+	public void index(Model model) throws Exception {
+		log.info("index......................page");
+		
+		//ordermapper
+		model.addAttribute("result", ordermapper.getOrder());
+		
+		
+	}
 	
 	@GetMapping("/sales")
 	public void sales() {
