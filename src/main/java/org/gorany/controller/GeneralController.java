@@ -18,7 +18,7 @@ public class GeneralController {
 	private OrderMapper ordermapper;
 	
 	@GetMapping("/index")
-	public void index(Model model) throws Exception {
+	public void index(Model model) {
 		log.info("index......................page");
 		
 		//ordermapper
