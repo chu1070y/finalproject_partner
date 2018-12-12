@@ -2,7 +2,7 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// Area Chart Example
+// Daily Chart
 var chartLabels = [];
 var chartData = [];
 $.getJSON("http://localhost:8080/salesList", function(data){
@@ -36,6 +36,8 @@ var lineChartData = {
 		}
 			]
 }
+
+
 function createChart(){
 	var ctx = document.getElementById("myAreaChart").getContext("2d");
 	LineChartDemo = Chart.Line(ctx,{

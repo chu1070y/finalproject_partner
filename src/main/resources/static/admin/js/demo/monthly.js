@@ -2,7 +2,7 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// Area Chart Example
+// Monthly Chart
 var monthLabels = [];
 var monthlyData = [];
 $.getJSON("http://localhost:8080/monthlyList", function(data){
