@@ -22,6 +22,23 @@ public class SalesServiceImpl implements SalesService {
 		
 		return mapper.getDailySales();
 	}
+	
 
+	@Override
+	public List<SalesVO> getWeeklySales() {
+		
+		return mapper.getWeeklySales();
+	}
+
+	@Override
+	public List<SalesVO> getMonthlySales() {
+		
+		return mapper.getMonthlySales();
+	}
+
+
+
+
+	
 	
 }

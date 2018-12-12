@@ -34,9 +34,25 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value = "salesList", method = RequestMethod.GET, produces="text/plain;charset=UTF-8")
-	public @ResponseBody String incomeList(Locale locale, Model model) {
+	public @ResponseBody String dailyList(Locale locale, Model model) {
 		Gson gson = new Gson();
 		List<SalesVO> list = service.getDailySales();
+		
+		return gson.toJson(list);
+	}
+	
+	@RequestMapping(value = "weeklyList", method = RequestMethod.GET, produces="text/plain;charset=UTF-8")
+	public @ResponseBody String weeklyList(Locale locale, Model model) {
+		Gson gson = new Gson();
+		List<SalesVO> list = service.getWeeklySales();
+		
+		return gson.toJson(list);
+	}
+	
+	@RequestMapping(value = "monthlyList", method = RequestMethod.GET, produces="text/plain;charset=UTF-8")
+	public @ResponseBody String monthlyList(Locale locale, Model model) {
+		Gson gson = new Gson();
+		List<SalesVO> list = service.getMonthlySales();
 		
 		return gson.toJson(list);
 	}

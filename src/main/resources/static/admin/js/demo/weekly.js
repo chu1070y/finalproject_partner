@@ -3,24 +3,24 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Area Chart Example
-var chartLabels = [];
-var chartData = [];
-$.getJSON("http://localhost:8080/salesList", function(data){
+var weekLabels = [];
+var weeklyData = [];
+$.getJSON("http://localhost:8080/weeklyList", function(data){
 	
 	$.each(data, function(inx, obj){
-		chartLabels.push(obj.orderdate);
-		chartData.push(obj.total);
+		weekLabels.push(obj.start);
+		weeklyData.push(obj.total);
 	});
 	createChart();
-	console.log(chartLabels)
-	console.log(chartData)
-	console.log("create daily chart")
+	console.log(weekLabels)
+	console.log(weeklyData)
+	console.log("create weekly chart")
 });
 var lineChartData = {
-		labels : chartLabels,
+		labels : weekLabels,
 		datasets : [
 			{
-				label : "Daily Sales",
+				label : "Weekly Sales",
 				lineTension: 0.3,
 		        backgroundColor: "rgba(2,117,216,0.2)",
 		        borderColor: "rgba(2,117,216,1)",
@@ -31,14 +31,14 @@ var lineChartData = {
 		        pointHoverBackgroundColor: "rgba(2,117,216,1)",
 		        pointHitRadius: 50,
 		        pointBorderWidth: 2,
-				data : chartData
+				data : weeklyData
 			
 		}
 			]
 }
 function createChart(){
-	var ctx = document.getElementById("myAreaChart").getContext("2d");
-	LineChartDemo = Chart.Line(ctx,{
+	var ctx = document.getElementById("myweeklyChart").getContext("2d");
+	LineChartDemo = Chart.Line(ctx2,{
 		data : lineChartData,
 		options :{
 			scales : {

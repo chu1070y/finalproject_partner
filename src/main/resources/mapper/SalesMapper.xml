@@ -19,5 +19,36 @@
 		order by orderdate;
 	
 	</select>
+	
+	<select id="getWeeklySales" resultType="org.gorany.domain.mapper.SalesVO">
+
+
+		select DATE_FORMAT(DATE_SUB(`approved_at`, INTERVAL (DAYOFWEEK(`approved_at`)-1) DAY), '%Y/%m/%d') as start,
+        DATE_FORMAT(DATE_SUB(`approved_at`, INTERVAL (DAYOFWEEK(`approved_at`)-7) DAY), '%m/%d') as end,
+        DATE_FORMAT(`approved_at`, '%Y%U') as 'week',
+        sum(mprice*quantity) total
+		FROM gorany.order join
+		(select tid, mprice, quantity
+		from gorany.order_info left join gorany.partner_store_menu
+		on gorany.order_info.mno = gorany.partner_store_menu.mno) allorder
+		on gorany.order.tid = allorder.tid
+		where sno = 1
+		group by week
+		order by start;
+	</select>
+	
+	<select id="getMonthlySales" resultType="org.gorany.domain.mapper.SalesVO">
+	
+		
+		SELECT MONTH(`approved_at`) AS `month`,
+		       sum(mprice*quantity) total
+		FROM gorany.order join
+		(select tid, mprice, quantity
+		from gorany.order_info left join gorany.partner_store_menu
+		on gorany.order_info.mno = gorany.partner_store_menu.mno) allorder
+		on gorany.order.tid = allorder.tid
+		where sno = 1
+		GROUP BY `month`;
+	</select>
 </mapper>
 
